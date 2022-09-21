@@ -12,17 +12,16 @@ export default function Register() {
   const [agree, setAgree] = useState(false);
   const [error, setError] = useState("");
   const [register, { data, isLoading, error: serverError }] =
-        useRegisterMutation();
-    const navigate = useNavigate();
-    useEffect(() => {
-      console.log(serverError);
+    useRegisterMutation();
+  const navigate = useNavigate();
+  useEffect(() => {
     if (serverError?.error) {
       setError(serverError?.error);
     } else {
-        setError("");
-        if(data?.accessToken && data?.user){
-             navigate("/inbox");
-        }
+      setError("");
+      if (data?.accessToken && data?.user) {
+        navigate("/inbox");
+      }
     }
   }, [serverError, data, navigate]);
 
@@ -153,7 +152,7 @@ export default function Register() {
               </button>
             </div>
           </form>
-      {error && <Error message={error} />}
+          {error && <Error message={error} />}
         </div>
       </div>
     </div>
