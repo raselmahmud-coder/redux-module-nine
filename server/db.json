@@ -23,6 +23,12 @@
       "password": "$2a$10$MUh7teUGEZBZCq77HiwOreQvE0AHR.Sz.y6BKt0sbeXKl6O.xkvBC",
       "name": "rasel",
       "id": 4
+    },
+    {
+      "email": "raselswpu@foxmail.com",
+      "password": "$2a$10$xayCCBD8ZdOtcGgJpBOqHuzGnfQ1KaSUGO9lVT54bslWaalSXHBQu",
+      "name": "RASEL MAHMUD",
+      "id": 5
     }
   ],
   "conversations": [

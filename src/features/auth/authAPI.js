@@ -10,33 +10,25 @@ export const authAPI = apiSlice.injectEndpoints({
         body,
       }),
       async onQueryStarted(body, { dispatch, getState, queryFulfilled }) {
-        console.log(getState, "onQueryStarted", body);
         try {
           const result = await queryFulfilled;
-          console.log(result, "onQueryStarted");
           localStorage.setItem("auth", JSON.stringify(result.data));
           dispatch(login(result.data));
-        } catch (error) {
-          console.log(error);
-        }
+        } catch (error) {}
       },
     }),
     login: builder.mutation({
       query: (body) => ({
-        url: "/register",
+        url: "/",
         method: "POST",
         body,
       }),
       async onQueryStarted(body, { dispatch, getState, queryFulfilled }) {
-        console.log(getState, "onQueryStarted", body);
         try {
           const result = await queryFulfilled;
-          console.log(result, "onQueryStarted");
           localStorage.setItem("auth", JSON.stringify(result.data));
           dispatch(login(result.data));
-        } catch (error) {
-          console.log(error);
-        }
+        } catch (error) {}
       },
     }),
   }),

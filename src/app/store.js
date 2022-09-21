@@ -4,7 +4,6 @@ import authSlice from "../features/auth/authSlice";
 import conversationsSlice from "../features/conversations/conversationsSlice";
 import messagesSlice from "../features/messages/messagesSlice";
 
-console.log(process.env.NODE_ENV !== "production");
 
 export const store = configureStore({
   reducer: {
