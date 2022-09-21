@@ -14,10 +14,7 @@ const useAuthVerification = () => {
       }
     }
 
-      setTimeout(() => {
-          setAuthLoading(false);
-        
-      }, 2000);
+    setAuthLoading(false);
   }, [dispatch]);
 
   return authLoading;
