@@ -1,9 +1,10 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
+html-template/
 # dependencies
-/node_modules
+/node_modules/
+/public/
 /server/node_modules
-/html-template
 /html-template/node_modules
 /.pnp
 .pnp.js
@@ -14,10 +15,10 @@
 # production
 /build
 
+.env
 # misc
 .DS_Store
 .vscode
-.env
 .env.local
 .env.development.local
 .env.test.local
