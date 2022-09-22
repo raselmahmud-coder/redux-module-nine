@@ -38,7 +38,7 @@
       "users": [
         {
           "email": "raselswpu@foxmail.com",
-          "name": "Sumit Saha",
+          "name": "RASEL MAHMUD",
           "id": 1
         },
         {
@@ -74,8 +74,8 @@
       "id": 1,
       "conversationId": 1,
       "sender": {
-        "email": "sumit@learnwithsumit.com",
-        "name": "Sumit Saha",
+        "email": "raselswpu@foxmail.com",
+        "name": "RASEL MAHMUD",
         "id": 1
       },
       "receiver": {

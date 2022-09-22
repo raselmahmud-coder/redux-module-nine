@@ -24,7 +24,7 @@ export default function ChatItems() {
   if (!isLoading && error)
     content = (
       <li className="m-2 text-center text-2xl">
-        <Error message={error} />
+        <Error message={error?.data} />
       </li>
     );
   if (!isLoading && !error && conversations?.length === 0) {
@@ -35,11 +35,11 @@ export default function ChatItems() {
   if (!isLoading && !error && conversations?.length > 0) {
     content = conversations.map((item) => {
       const { id, message, timestamp } = item;
+      console.log(id, message, timestamp);
       const { name, email: partnerEmail } = getPartnersInfo(
         item.users,
         user?.email,
       );
-
       return (
         <li key={id}>
           <Link to={`/inbox/${id}`}>
@@ -48,7 +48,7 @@ export default function ChatItems() {
               name={name}
               lastMessage={message}
               lastTime={moment(timestamp).fromNow()}
-            />
+              />
           </Link>
         </li>
       );
