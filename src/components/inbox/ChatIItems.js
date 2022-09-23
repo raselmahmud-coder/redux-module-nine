@@ -1,26 +1,36 @@
 import ChatItem from "./ChatItem";
-import { useSelector } from "react-redux/es/exports";
+import { useDispatch, useSelector } from "react-redux/es/exports";
 import { useGetConversationsQuery } from "../../features/conversations/conversationsApi";
 import Error from "../ui/Error";
 import moment from "moment";
 import getPartnersInfo from "../../utils/getPartnersInfo";
 import gravatarUrl from "gravatar-url";
 import { Link } from "react-router-dom";
+import { logout } from "../../features/auth/authSlice";
 
 export default function ChatItems() {
   const { user } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
   const {
     data: conversations,
     isLoading,
+    isError,
     error,
-  } = useGetConversationsQuery(
-    { email: user?.email },
-    /*  { refetchOnMountOrArgChange: true }, */
-  );
+  } = useGetConversationsQuery({ email: user?.email });
+  // console.log(conversations);
   // decide what to render
   let content = null;
   if (isLoading)
     content = <li className="m-2 text-center text-2xl">Loading...</li>;
+  if (
+    isError &&
+    (error?.data === "jwt expired" ||
+      error?.data === "Unauthorized" ||
+      error?.data === "invalid token")
+  ) {
+    dispatch(logout());
+  }
+
   if (!isLoading && error)
     content = (
       <li className="m-2 text-center text-2xl">
@@ -35,11 +45,11 @@ export default function ChatItems() {
   if (!isLoading && !error && conversations?.length > 0) {
     content = conversations.map((item) => {
       const { id, message, timestamp } = item;
-      console.log(id, message, timestamp);
       const { name, email: partnerEmail } = getPartnersInfo(
         item.users,
         user?.email,
       );
+      console.log(getPartnersInfo(item.users, user?.email));
       return (
         <li key={id}>
           <Link to={`/inbox/${id}`}>
@@ -48,7 +58,7 @@ export default function ChatItems() {
               name={name}
               lastMessage={message}
               lastTime={moment(timestamp).fromNow()}
-              />
+            />
           </Link>
         </li>
       );

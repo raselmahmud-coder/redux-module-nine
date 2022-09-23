@@ -11,19 +11,20 @@ export default function Register() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [agree, setAgree] = useState(false);
   const [error, setError] = useState("");
-  const [register, { data, isLoading, error: serverError }] =
+  const [register, { data, isLoading, error: serverError, isSuccess }] =
     useRegisterMutation();
+  console.log(serverError);
   const navigate = useNavigate();
   useEffect(() => {
-    if (serverError?.error) {
-      setError(serverError?.error);
+    if (serverError?.error || serverError?.data) {
+      setError(serverError?.error || serverError?.data);
     } else {
       setError("");
       if (data?.accessToken && data?.user) {
         navigate("/inbox");
       }
     }
-  }, [serverError, data, navigate]);
+  }, [serverError, data, navigate, isSuccess]);
 
   const handleSubmit = (e) => {
     e.preventDefault();

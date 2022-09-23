@@ -1,4 +1,5 @@
 import { apiSlice } from "../API/APISlice";
+import { messageApi } from "../messages/messagesApi";
 
 export const conversationApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -12,11 +13,26 @@ export const conversationApi = apiSlice.injectEndpoints({
         `/conversations?participants_like=${userEmail}-${participantEmail}&&participants_like=${participantEmail}-${userEmail}`,
     }),
     addConversation: builder.mutation({
-      query: (body) => ({
+      query: ({sender, data}) => ({
         url: `/conversations`,
         method: "POST",
-        body,
+        body:data,
       }),
+      async onQueryStarted(args, { dispatch, getState, queryFulfilled }) {
+        try {
+          const conversation = await queryFulfilled;
+          if (conversation?.id) {
+            const users = args.data.users;
+            // const senderUser = users.find((user) => user.email === sender);
+            // silent entry to messages table / db
+            dispatch(
+              messageApi.endpoints.addMessage.initiate({
+                email: args.users[0].email,
+              }),
+            );
+          }
+        } catch (error) {}
+      },
     }),
     editConversation: builder.mutation({
       query: ({ body, id }) => ({

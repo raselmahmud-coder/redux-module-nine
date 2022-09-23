@@ -11,7 +11,6 @@ export default function Login() {
   const [login, { data, isLoading, error: serverError }] = useLoginMutation();
   const navigate = useNavigate();
     useEffect(() => {
-      console.log(serverError);
     if (serverError?.data) {
       setError(serverError?.data);
     } else {

@@ -3,7 +3,11 @@ import { useGetUserQuery } from "../../features/users/usersAPI";
 import isValidEmail from "../ui/isValidEmail";
 import Error from "../../components/ui/Error";
 import { useDispatch, useSelector } from "react-redux";
-import { conversationApi } from "../../features/conversations/conversationsApi";
+import {
+  conversationApi,
+  useAddConversationMutation,
+  useEditConversationMutation,
+} from "../../features/conversations/conversationsApi";
 
 export default function Modal({ open, control }) {
   const [to, setTo] = useState("");
@@ -18,6 +22,17 @@ export default function Modal({ open, control }) {
   const { email: loggedInEmail } = loggedInUser || {};
   const [conversation, setConversation] = useState(undefined);
   const dispatch = useDispatch();
+  const [addConversation, { isSuccess: addConSuccess }] =
+    useAddConversationMutation();
+  const [editConversation, { isSuccess: editConSuccess }] =
+    useEditConversationMutation();
+  useEffect(() => {
+    if (addConSuccess || editConSuccess) {
+      control();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [addConSuccess, editConSuccess]);
+
   useEffect(() => {
     if (
       participant &&
@@ -55,9 +70,30 @@ export default function Modal({ open, control }) {
     }
   };
   const handleSearch = debounceHandler(doSearch, 500);
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        console.log("submit");
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (conversation?.length > 0) {
+      // edit conversation
+      editConversation({
+        id: conversation?.[0]?.id,
+        body: {
+          message,
+          timestamp: new Date().getTime(),
+        },
+      });
+    } else if (conversation?.length === 0) {
+      const { email, id, name } = participant?.[0];
+      // add conversation
+      addConversation({
+        sender: loggedInEmail,
+        data: {
+          participants: `${loggedInEmail}-${email}`,
+          users: [loggedInUser, { id, email, name }],
+          message,
+          timestamp: new Date().getTime(),
+        },
+      });
+    }
   };
   return (
     open && (
