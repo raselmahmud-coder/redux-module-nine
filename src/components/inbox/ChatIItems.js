@@ -17,7 +17,6 @@ export default function ChatItems() {
     isError,
     error,
   } = useGetConversationsQuery({ email: user?.email });
-  // console.log(conversations);
   // decide what to render
   let content = null;
   if (isLoading)
@@ -49,7 +48,7 @@ export default function ChatItems() {
         item.users,
         user?.email,
       );
-      console.log(getPartnersInfo(item.users, user?.email));
+      // console.log(getPartnersInfo(item.users, user?.email));
       return (
         <li key={id}>
           <Link to={`/inbox/${id}`}>

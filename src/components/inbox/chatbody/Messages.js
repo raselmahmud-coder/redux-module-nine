@@ -3,7 +3,7 @@ import Message from "./Message";
 
 export default function Messages({ messages = [] }) {
   const { user } = useSelector((state) => state.auth || {});
-  console.log(messages);
+  // console.log(messages);
 
   const { email } = user || {}; //this is logged in user's email
   return (
@@ -14,7 +14,7 @@ export default function Messages({ messages = [] }) {
           .sort((a, b) => a.timestamp - b.timestamp)
           .map((message) => {
             const { message: lastMessage, id, sender } = message;
-            console.log(sender.email, email);
+            // console.log(sender.email, email);
             const justify = sender.email === email ? "end" : "start";
 
             return <Message key={id} justify={justify} message={lastMessage} />;

@@ -73,10 +73,14 @@ export default function Modal({ open, control }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (conversation?.length > 0) {
+      const { email, id, name } = participant?.[0];
       // edit conversation
       editConversation({
         id: conversation?.[0]?.id,
-        body: {
+        sender: loggedInEmail,
+        data: {
+          participants: `${loggedInEmail}-${email}`,
+          users: [loggedInUser, { id, email, name }],
           message,
           timestamp: new Date().getTime(),
         },
