@@ -63,5 +63,9 @@ export default function ChatItems() {
       );
     });
   }
-  return <ul>{content}</ul>;
+  return (
+    <>
+      <ul>{content}</ul>;
+    </>
+  );
 }
