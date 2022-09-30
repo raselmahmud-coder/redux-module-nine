@@ -8,6 +8,13 @@ export const conversationApi = apiSlice.injectEndpoints({
     getConversations: builder.query({
       query: ({ email, page = 1 }) =>
         `/conversations?participants_like=${email}&_sort=timestamp&_order=desc&_page=${page}&limit=${process.env.REACT_APP_CONVERSATIONS_PER_PAGE}`,
+      transformResponse(apiResponse, meta, arg) {
+        const totalCount = meta.response.headers.get("X-Total-Count");
+        return {
+          conversations: apiResponse,
+          totalCount,
+        };
+      },
       async onCacheEntryAdded(
         arg,
         { cacheDataLoaded, updateCachedData, cacheEntryRemoved },
@@ -52,14 +59,17 @@ export const conversationApi = apiSlice.injectEndpoints({
       async onQueryStarted({ email, page }, { queryFulfilled, dispatch }) {
         try {
           const conversations = await queryFulfilled;
-          if (conversations?.length > 0) {
+          if (conversations?.data?.length > 0) {
             /* update messages cache pessimistically start */
             dispatch(
               apiSlice.util.updateQueryData(
                 "getConversations",
                 { email },
                 (draft) => {
-                  return [...draft, ...conversations];
+                  return {
+                    conversations: [...draft.conversations, ...conversations.data],
+                    totalCount: +draft.totalCount,
+                  };
                 },
               ),
             );
@@ -116,7 +126,9 @@ export const conversationApi = apiSlice.injectEndpoints({
             "getConversations",
             { email: args.sender },
             (draft) => {
-              const draftConversation = draft.find((con) => con.id == args.id);
+              const draftConversation = draft.conversations.find(
+                (con) => con.id.toString() === args.id.toString(),
+              );
               draftConversation.message = args.data.message;
               draftConversation.timestamp = args.data.timestamp;
               return draft;
