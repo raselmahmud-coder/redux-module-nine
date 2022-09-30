@@ -82,7 +82,7 @@ export default function ChatItems() {
         dataLength={conversations.length}
         next={fetchMoreData}
         hasMore={hasMore}
-        loader={<h4 className="text-center font-bold">Loading...</h4>}
+        loader={<h4 className="text-center font-bold text-2xl text-red-400">Loading...</h4>}
         height={window.innerHeight - 200}
         endMessage={
           <p style={{ textAlign: "center" }}>
